@@ -1,0 +1,28 @@
+{
+  "name": "Yambi",
+  "version": "1.2.3",
+  "description": "Yambi APIs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec babel-node src/server.js"
+  },
+  "author": "Agisha Migani Joan",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "fs": "^0.0.1-security",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.2",
+    "sequelize": "^6.8.0",
+    "socket.io": "^4.4.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.8",
+    "@babel/node": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "nodemon": "^2.0.7"
+  }
+}
