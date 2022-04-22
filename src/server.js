@@ -1,10 +1,13 @@
+import FetchUserData from './APIs/fetch_user_data';
 import FindUserMessages from './APIs/find_user_messages';
+import MessagePicture from './APIs/message_picture';
 import SendPresavedMessages from './APIs/send_presaved_messages';
 import SetChatRead from './APIs/set_chat_read';
 import SetMessagesReceived from './APIs/set_messages_received';
 import Signup from './APIs/signup';
 import SocketMessage from './APIs/socket';
 import FindStatusMessages from './APIs/status_messages';
+import UploadProfilePicture from './APIs/upload_profile_picture';
 
 Signup();
 SocketMessage();
@@ -13,3 +16,6 @@ FindUserMessages();
 SetChatRead();
 SetMessagesReceived();
 FindStatusMessages();
+MessagePicture();
+UploadProfilePicture();
+FetchUserData();

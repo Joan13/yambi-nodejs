@@ -1,10 +1,11 @@
 import http from 'http';
 import Yambi from '../express';
 import { Messages } from '../../models/messages';
-import {Op} from 'sequelize';
+import { Op } from 'sequelize';
 import fs from 'fs';
 import path from 'path';
 import FindUserMessages from './find_user_messages';
+import moment from 'moment';
 
 export default function SocketMessage() {
     const server = http.createServer(Yambi);
@@ -27,7 +28,7 @@ export default function SocketMessage() {
                     response_to_token: msg.response_to_token,
                     message_read: '0',
                     message_effect: msg.message_effect,
-                    date_creation:msg.date_creation,
+                    date_creation: moment.utc().format('YYYY-MM-DD HH:mm:ss'),
                     deleted: "0"
                 }
             })
@@ -35,9 +36,7 @@ export default function SocketMessage() {
                     socket.broadcast.emit("newMessage" + msg.receiver, msg);
                     socket.broadcast.emit("messageSent" + msg.sender, msg.message_id);
                 })
-                .catch((error) => {
-                    console.log("Error while sending the message" + error);
-                })
+                .catch((error) => { });
         });
 
         socket.on("sendPresavedMessages", messages => {
@@ -56,7 +55,7 @@ export default function SocketMessage() {
                         response_to_token: msg.response_to_token,
                         message_read: '0',
                         message_effect: msg.message_effect,
-                        date_creation:msg.date_creation,
+                        date_creation: moment.utc().format('YYYY-MM-DD HH:mm:ss'),
                         deleted: "0"
                     }
                 })
@@ -64,41 +63,47 @@ export default function SocketMessage() {
                         socket.broadcast.emit("newMessage" + msg.receiver, new_message);
                         socket.broadcast.emit("messageSent" + msg.sender, msg.message_id);
                     })
+                    .catch((error) => { });
+            }
+        });
+
+        socket.on('fetchUserMessages', user => {
+            console.log(user + 'askes for his messages');
+            Messages.findAll({
+                where: { receiver: user, message_read: '0' }
+            })
+                .then((messages) => {
+                    for(let i in messages) {
+                        socket.broadcast.emit('newMessage' + messages[i].receiver, messages[i]);
+                    }
+                })
+                .catch((error) => {console.log("Error while sending the message" + error);})
+        });
+
+        socket.on('check_messages_status', (data) => {
+
+            let messages = [];
+            // console.log(data);
+            for (let i in data) {
+                // socket.emit('message_user_status' + data[i].sender, data[i]);
+                // console.log('message_user_status' + data[i].sender);
+                Messages.findAll({
+                    where: {
+                        token: data[i].token,
+                        // message_read:{[Op.ne]:"1"}
+                    }
+                })
+                    .then((message) => {
+                        if (message[0] !== [] && data[i].message_read !== message[0].message_read) {
+                            // console.log("message[0].message_read + ' ' + data[i].message_read");
+                        console.log(message[0].main_text_message);
+                        socket.emit("message_user_status" + message[0].sender,message[0]);
+                        }
+                    })
                     .catch((error) => {
                         console.log("Error while sending the message" + error);
                     })
             }
-        });
-
-        socket.on('checkMessagesStatus',data=>{
-            // Yambi.post("/yambi/API/find_user_messages", (request, response) => {
-            //     let user = request.body.user;
-
-            let messages = [];
-            for (let i in data.messages){
-                    Messages.findAll({
-                        where: {
-                            sender:data.user,
-                            receiver:data.messages[i].receiver,
-                            token:data.messages[i].token,
-                            // message_read:{[Op.ne]:"1"}
-                        }
-                    })
-                        .then((message) => {
-
-                            
-                            // 
-                                if(data.messages[i].message_read !== message[0].message_read) {
-                                    console.log(message[0].token + " " + data.messages[i].message_read);
-                                }
-                            // }
-                            // io.emit("messagesStatusChange" + user.phone_number,messages);
-                        })
-                        .catch((error) => {
-                            console.log("Error while sending the message" + error);
-                        })
-                }
-            // });
         })
     });
 
