@@ -33,8 +33,8 @@ export default function SocketMessage() {
                 }
             })
                 .then((new_message) => {
-                    socket.broadcast.emit("newMessage" + msg.receiver, msg);
-                    socket.broadcast.emit("messageSent" + msg.sender, msg.message_id);
+                    io.sockets.emit("newMessage" + msg.receiver, new_message[0]);
+                    io.sockets.emit("messageSent" + msg.sender, new_message[0]);
                 })
                 .catch((error) => { });
         });
@@ -60,8 +60,8 @@ export default function SocketMessage() {
                     }
                 })
                     .then((new_message) => {
-                        socket.broadcast.emit("newMessage" + msg.receiver, new_message);
-                        socket.broadcast.emit("messageSent" + msg.sender, msg.message_id);
+                        io.sockets.emit("newMessage" + msg.receiver, new_message);
+                        io.sockets.emit("messageSent" + msg.sender, msg.message_id);
                     })
                     .catch((error) => { });
             }
@@ -81,8 +81,7 @@ export default function SocketMessage() {
         });
 
         socket.on('check_messages_status', (data) => {
-
-            let messages = [];
+            // let messages = [];
             // console.log(data);
             for (let i in data) {
                 // socket.emit('message_user_status' + data[i].sender, data[i]);
@@ -94,15 +93,32 @@ export default function SocketMessage() {
                     }
                 })
                     .then((message) => {
-                        if (message[0] !== [] && data[i].message_read !== message[0].message_read) {
+                        if (message[0].length !== 0 && data[i].message_read !== message[0].message_read) {
                             // console.log("message[0].message_read + ' ' + data[i].message_read");
-                        console.log(message[0].main_text_message);
-                        socket.emit("message_user_status" + message[0].sender,message[0]);
+                        // console.log(message[0]);
+                        io.sockets.emit("message_user_status" + message[0].sender,message[0]);
                         }
                     })
                     .catch((error) => {
                         console.log("Error while sending the message" + error);
                     })
+            }
+        })
+
+        socket.on('update_messages_delivery', (data) => {
+            // let messages = [];
+            // console.log(data);
+            for (let i in data) {
+                // socket.emit('message_user_status' + data[i].sender, data[i]);
+                // console.log('message_user_status' + data[i].sender);
+                Messages.update({ message_read: data[i].message_read },
+                { where: { token: data[i].token } })
+                .then(() => {
+                    io.sockets.emit("message_user_status" + message[0].sender,message[0]);
+                })
+                .catch((error) => {
+                    console.log("Error while updating the message" + error);
+                })
             }
         })
     });
