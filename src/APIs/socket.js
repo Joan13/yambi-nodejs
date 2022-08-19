@@ -95,7 +95,7 @@ export default function SocketMessage() {
                     .then((message) => {
                         if (message[0].length !== 0 && data[i].message_read !== message[0].message_read) {
                             // console.log("message[0].message_read + ' ' + data[i].message_read");
-                        // console.log(message[0]);
+                        // console.log(data[i]);
                         io.sockets.emit("message_user_status" + message[0].sender,message[0]);
                         }
                     })

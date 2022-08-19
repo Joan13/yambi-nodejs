@@ -53,7 +53,7 @@ export const Messages = sequelize.define("messages", {
         allowNull: false,
         unique: true
     },
-    date_creation:{
+    date_creation: {
         type: Sequelize.STRING(50),
         allowNull: false,
     }
