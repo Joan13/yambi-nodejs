@@ -1,9 +1,9 @@
 import Sequelize from "sequelize";
 
-export const sequelize = new Sequelize("yb_center", "root", "root", {
+export const sequelize = new Sequelize("yb_center", "root", "", {
     dialect: "mysql",
     host: "localhost",
-    port: 8889,
+    // port: 8889,
     dialectOptions: {
         charset: 'utf8mb4'
       },

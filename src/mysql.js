@@ -2,8 +2,8 @@ import mysql from 'mysql';
 export const connection = mysql.createConnection({
 	user: "root",
 	host: "localhost",
-	password: "root",
-	port: "8888",
+	password: "",
+	// port: "8888",
 	database: "yb_center",
-	socketPath: '/Applications/MAMP/tmp/mysql/mysql.sock'
+	// socketPath: '/Applications/MAMP/tmp/mysql/mysql.sock'
 });
