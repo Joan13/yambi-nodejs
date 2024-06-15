@@ -1,17 +1,13 @@
-import { Messages } from "../../models/messages";
-import Yambi from "../express";
+import { MessagesModel } from "../../models/messages";
 
-export default function FindUserMessages() {
-    Yambi.post("/yambi/API/find_user_messages", (request, response) => {
-        // let user = request.body.user;
-        // Messages.findAll({
-        //     where: { receiver: user, message_read:"0"}
-        // })
-        //     .then((messages) => {
-        //         response.send({ success: "1", data: messages });
-        //     })
-        //     .catch((error) => {
-        //         console.log("Error while sending the message" + error);
-        //     })
-    });
+const FindUserMessages = async (phone_number) => {
+    try {
+        const messages = await MessagesModel.find({$where:"this.receiver == " + phone_number + " && this.message_read == 0 || this.message_read == 4"});
+        return messages;
+
+    } catch (error) {
+        console.log(error);
+    }
 }
+
+export default FindUserMessages;

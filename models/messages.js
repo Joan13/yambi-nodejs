@@ -1,61 +1,30 @@
-import Sequelize from "sequelize";
-import { sequelize } from "../util/database";
+import mongoose from "mongoose";
 
-export const Messages = sequelize.define("messages", {
-    message_id: {
-        type: Sequelize.BIGINT,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
+const MessagesSchema = mongoose.Schema(
+    {
+        _id: { type: String, unique: true },
+        sender: { type: String, required: true },
+        receiver: { type: String, required: true },
+        main_text_message: { type: String, default: "" },
+        message_type: { type: Number },
+        response_to: { type: String },
+        message_read: { type: Number },
+        reactions: { type: String },
+        message_effect: { type: Number },
+        flag: { type: Number },
+        platform: { type: String },
+        token: { type: String, unique: true, },
+        deleted: { type: Number },
+        receivedAt: { type: String },
+        readAt: { type: String },
+        playedAt: { type: String },
+        cc: { type: String }
     },
-    sender: {
-        type: Sequelize.STRING(20),
-        allowNull: false
-    },
-    receiver: {
-        type: Sequelize.STRING(20),
-        allowNull: false,
-    },
-    gender: {
-        type: Sequelize.STRING(1),
-        allowNull: false
-    },
-    main_text_message: {
-        type: Sequelize.TEXT,
-        allowNull: false
-    },
-    response_to: {
-        type: Sequelize.STRING(20),
-        allowNull: false
-    },
-    response_to_text: {
-        type: Sequelize.STRING(255),
-        allowNull: false
-    },
-    response_to_token: {
-        type: Sequelize.STRING(255),
-        allowNull: false
-    },
-    message_read: {
-        type: Sequelize.STRING(1),
-        allowNull: false
-    },
-    message_effect: {
-        type: Sequelize.STRING(2),
-        allowNull: false
-    },
-    deleted: {
-        type: Sequelize.STRING(1),
-        allowNull: false
-    },
-    token: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-    },
-    date_creation: {
-        type: Sequelize.STRING(50),
-        allowNull: false,
+    {
+        timestamps: true,
+        primaryKey: '_id'
     }
-},
-    { charset: 'utf8mb4' });
+)
+
+export const MessagesModel = mongoose.model("messages_yb", MessagesSchema, 'messages');
+

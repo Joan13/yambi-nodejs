@@ -1,34 +1,44 @@
-import { Messages } from "../../models/messages";
 import Yambi from "../express";
 import multer from "multer";
-import { v4 as uuidv4 } from 'uuid';
-import { User } from '../../models/users';
-let fileName = '';
+import fs from 'fs';
+import { User } from "../../models/users";
 
 const storage = multer.diskStorage({
-    destination: (request, file, cb) => { cb(null, './media/profile_pictures/') },
+    destination: (request, file, cb) => {
+        return cb(null, './media/profile_pictures');
+    },
     filename: (request, file, cb) => {
-        const { originalname } = file;
-        fileName = `${uuidv4()}-${originalname}`;
-        cb(null, fileName);
+        const filename = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        return cb(null, `${filename + file.originalname}`);
     }
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage: storage });
 
-export default function UploadProfilePicture() {
-    Yambi.post("/yambi/API/upload_profile_picture", upload.single('image'), (request, response) => {
-        const phone = request.body.phone_number;
+const UploadProfilePicture = () => {
+    Yambi.post("/yambi/API/upload_profile_picture", upload.single('image'), async (request, response) => {
 
-        if (fileName !== '') {
-            User.update({ user_profile: fileName },
-                { where: { phone_number: phone } })
-                .then(() => {
-                    response.send({ success: "1", filename:fileName });
-                })
-                .catch((error) => { response.send({ success: 0 }); })
+        const user_profile = request.body.user_profile;
+        const phone_number = request.body.assemble;
+
+        if (request.file) {
+            try {
+                fs.unlinkSync('./media/profile_pictures/' + user_profile);
+            } catch (err) { }
+
+            await User.update({ user_profile: request.file.filename }, {
+                where: {
+                    phone_number: phone_number,
+                },
+            });
+
+            response.send({ message: "1", user_profile: request.file.filename, assemble: phone_number });
+
         } else {
-            response.send({ success: 0 });
+            response.send({ message: "0" });
         }
     });
 }
+
+export default UploadProfilePicture;
+

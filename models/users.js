@@ -1,56 +1,30 @@
-import Sequelize from "sequelize";
-import { sequelize } from "../util/database";
+import mongoose from "mongoose";
 
-export const User = sequelize.define("yb_table_users", {
-    user_id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
+const UsersSchema = mongoose.Schema(
+    {
+        _id: { type: String, unique: true },
+        phone_number: { type: String, required: true, unique: true },
+        user_names: { type: String, required: true },
+        gender: { type: Number, required: true },
+        birth_date: { type: String },
+        country: { type: String, required: true },
+        user_profile: { type: String },
+        user_email: { type: String },
+        user_address: { type: String },
+        bio: { type: String },
+        profession: { type: String },
+        status_information: { type: String },
+        user_password: { type: String },
+        notification_token: { type: String },
+        account_privacy: { type: Number },
+        account_valid: { type: Number },
+        cc: { type: String }
     },
-    user_names: {
-        type: Sequelize.STRING(35),
-        allowNull: true
-    },
-    phone_number: {
-        type: Sequelize.STRING(20),
-        allowNull: false,
-    },
-    gender: {
-        type: Sequelize.STRING(1),
-        allowNull: false
-    },
-    birth_date: {
-        type: Sequelize.STRING(20),
-        allowNull: true
-    },
-    country: {
-        type: Sequelize.STRING(5),
-        allowNull: false
-    },
-    user_profile: {
-        type: Sequelize.STRING(255),
-        allowNull: true
-    },
-    profession: {
-        type: Sequelize.STRING(30),
-        allowNull: true
-    },
-    status_information: {
-        type: Sequelize.STRING(100),
-        allowNull: true
-    },
-    user_password: {
-        type: Sequelize.STRING(255),
-        allowNull: true
-    },
-    account_privacy: {
-        type: Sequelize.STRING(1),
-        allowNull: false,
-    },
-    account_valid: {
-        type: Sequelize.STRING(1),
-        allowNull: false
+    {
+        timestamps: true,
+        primaryKey: '_id'
     }
-},
-{charset:'utf8mb4'});
+)
+
+export const UsersModel = mongoose.model("users_yb", UsersSchema, 'users_center');
+
