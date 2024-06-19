@@ -1,4 +1,4 @@
-import { User } from "../../models/users";
+import { User, UsersModel } from "../../models/users";
 import Yambi from "../express";
 import { connection } from "../mysql";
 
@@ -8,90 +8,66 @@ export default function SyncContacts() {
         const contacts = request.body.contacts;
         let contacts_returned = [];
 
-        // User.findOrCreate({
-        //     where: { phone_number: phone_number },
-        //     defaults: {
-        //         user_names: user_names,
-        //         phone_number: phone_number,
-        //         birth_date: "",
-        //         user_profile: "",
-        //         status_information: "",
-        //         user_password: "",
-        //         gender: gender,
-        //         country: country,
-        //         account_privacy: "0",
-        //         account_valid: "1"
-        //     }
-        // })
-        //     .then((new_user) => {
-        //         response.send({ message: "1", assemble: new_user });
-        //     })
-        //     .catch((error) => {
-        //         response.send({ message: "0" });
-        //     })
-        let counter = 0;
+            let ppromise = new Promise((resolve, reject) => {
+                let counter = 0;
+                for (let i in contacts) {
+                    const cc = contacts[i].phoneNumber;
 
-        // contacts.forEach((contact,callback) => {
-        //     counter = counter+1;
-        //     console.log(contact)
-        // contacts_returned.push(contact);
-        // User.findOne({ where: {phone_number: contact.phoneNumber} }).then((user) => {
-        //     // User.findOne({ where: {phone_number: "+243976323470"} }).then(user => {
-        //     // project will be the first entry of the Projects table with the title 'aProject' || null
-        //     // user = JSON.stringify(user);
-        //     if (user !== null) {
-        //         contacts_returned.push(user);
-        //         console.log(user)
-        //         // response.send({"data":user});
-        //     }
-        //   })
-        //   .catch((e) => {
-        //       response.send({"message":"0"});
-        //   })
-        // });
+                    UsersModel.findOne({ phone_number: cc })
+                        .then(contact => {
+                            if (contact !== null) {
+                                // user.dataValues.user_names = contacts[i].displayName;
 
-        for (let i in contacts) {
-            // console.log(contacts[i])
-            counter = counter + 1;
-            let found_contact = [];
-            User.findOne({ where: { phone_number: contacts[i].phoneNumber } }).then(user => {
-                // User.findOne({ where: {phone_number: "+243976323470"} }).then(user => {
-                // project will be the first entry of the Projects table with the title 'aProject' || null
-                user = JSON.stringify(user);
-                // if (user !== null) {
-                // found_contact.push({"user_id":user.user_id,phone_number:user.phone_number});
-                found_contact.push(user)
-                // response.send({"data":user});
-                // }
+                                // if(user.dataValues.phone_number !== phone_number) {
+                                const cc = {
+                                    user_id: contact._id,
+                                    user_names: contact.user_names,
+                                    phone_number: contact.phone_number,
+                                    gender: contact.gender + "",
+                                    birth_date: contact.birth_date,
+                                    country: contact.country,
+                                    user_profile: contact.user_profile,
+                                    profession: contact.profession,
+                                    bio: contact.bio,
+                                    user_email: contact.user_email,
+                                    user_address: contact.user_address,
+                                    status_information: contact.status_information,
+                                    user_password: contact.user_password,
+                                    account_privacy: contact.account_privacy + "",
+                                    account_valid: contact.account_valid + "",
+                                    notification_token: contact.notification_token,
+                                    createdAt: contact.createdAt,
+                                    updatedAt: contact.updatedAt,
+                                }
+                                contacts_returned.push(cc);
+                                // }
 
-                // console.log(user)
+                                // console.log("Not null")
+                            }
+                            // console.log(userr)
+                        })
+
+                    counter = counter + 1;
+                    // console.log(counter);
+
+                    if (counter === contacts.length) {
+                        // resolve(counter);
+                        // console.log(counter +" : "+contacts.length);
+                        resolve(counter);
+                    }
+                }
             })
-                .catch((e) => {
-                    response.send({ "message": "0" });
-                })
 
-            //     connection.query("SELECT * FROM yb_table_users WHERE phone_number=?", [contacts[i].phoneNumber], (err, result) => {
-            // 	// result = JSON.stringify({ result });
-            // 	// result = JSON.parse(result);
+            ppromise.then((result) => {
 
-
-            // 	let rows = Object.values(JSON.parse(JSON.stringify(result)));
-            // 	let row = rows[0];
-
-            //     if (row !== undefined) {
-            //         contacts_returned.push(row);
-            //     }
-            // 	if (err) throw err;
-            // 	// console.log(result[0].id_zs);
-            // });
-
-            contacts_returned.push(found_contact);
-        }
-
-        // console.log(contacts_returned)
-
-        // if (contacts.length === counter) {
-        response.send({ "data": contacts_returned });
-        // }
+                setTimeout(() => {
+                    if (result === contacts.length) {
+                        // console.log(contacts_returned);
+                        // response.send({ success: "1", assemble: user, contacts: contacts_returned });
+                        // socket.emit('update_contacts', contacts_returned);
+                        response.send({contacts:contacts_returned});
+                    }
+                }, 2000)
+            })
     });
 }

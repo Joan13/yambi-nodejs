@@ -18,7 +18,6 @@ const UsersSchema = mongoose.Schema(
         notification_token: { type: String },
         account_privacy: { type: Number },
         account_valid: { type: Number },
-        cc: { type: String }
     },
     {
         timestamps: true,

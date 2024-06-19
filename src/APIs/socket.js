@@ -255,21 +255,6 @@ export default function SocketMessage() {
 
         socket.on('update_contacts', async (contacts) => {
             let contacts_returned = [];
-            // for (let i in contacts) {
-            //     const cc = contacts[i].phoneNumber;
-
-            //     await User.findOne({ where: { phone_number: cc } })
-            //         .then(user => {
-            //             if (user !== null) {
-            //                 user.dataValues.user_names = contacts[i].displayName;
-            //                 contacts_returned.push(user.dataValues);
-            //             }
-            //         })
-            // }
-
-            // setTimeout(() => {
-            //     socket.emit('update_contacts', contacts_returned);
-            // }, [2000]);
 
             let ppromise = new Promise((resolve, reject) => {
                 let counter = 0;
@@ -277,12 +262,32 @@ export default function SocketMessage() {
                     const cc = contacts[i].phoneNumber;
 
                     UsersModel.findOne({ phone_number: cc })
-                        .then(user => {
-                            if (user !== null) {
+                        .then(contact => {
+                            if (contact !== null) {
                                 // user.dataValues.user_names = contacts[i].displayName;
 
                                 // if(user.dataValues.phone_number !== phone_number) {
-                                contacts_returned.push(user);
+                                const cc = {
+                                    user_id: contact._id,
+                                    user_names: contact.user_names,
+                                    phone_number: contact.phone_number,
+                                    gender: contact.gender + "",
+                                    birth_date: contact.birth_date,
+                                    country: contact.country,
+                                    user_profile: contact.user_profile,
+                                    profession: contact.profession,
+                                    bio: contact.bio,
+                                    user_email: contact.user_email,
+                                    user_address: contact.user_address,
+                                    status_information: contact.status_information,
+                                    user_password: contact.user_password,
+                                    account_privacy: contact.account_privacy + "",
+                                    account_valid: contact.account_valid + "",
+                                    notification_token: contact.notification_token,
+                                    createdAt: contact.createdAt,
+                                    updatedAt: contact.updatedAt,
+                                }
+                                contacts_returned.push(cc);
                                 // }
 
                                 // console.log("Not null")

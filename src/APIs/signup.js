@@ -104,10 +104,30 @@ export default function Signup() {
                                     // user.dataValues.user_names = contacts[i].displayName;
 
                                     // if(user.dataValues.phone_number !== phone_number) {
-                                    contacts_returned.push(userr);
+                                    const user_assemble_data = {
+                                        user_id: userr._id,
+                                        user_names: userr.user_names,
+                                        phone_number: userr.phone_number,
+                                        gender: userr.gender + "",
+                                        birth_date: userr.birth_date,
+                                        country: userr.country,
+                                        user_profile: userr.user_profile,
+                                        profession: userr.profession,
+                                        bio: userr.bio,
+                                        user_email: userr.user_email,
+                                        user_address: userr.user_address,
+                                        status_information: userr.status_information,
+                                        user_password: userr.user_password,
+                                        account_privacy: userr.account_privacy + "",
+                                        account_valid: userr.account_valid + "",
+                                        notification_token: userr.notification_token,
+                                        createdAt: userr.createdAt,
+                                        updatedAt: userr.updatedAt,
+                                    }
+                                    contacts_returned.push(user_assemble_data);
                                     // }
 
-                                    console.log("Not null")
+                                    // console.log("Not null")
                                 }
                                 // console.log(userr)
                             })
@@ -162,56 +182,77 @@ export default function Signup() {
 
                             // UsersModel.findOne({ where: { phone_number: cc } })
                             //     .then(userr => {
-                                    // if (userr.length > 0) {
-                                    //     user.dataValues.user_names = contacts[i].displayName;
+                            // if (userr.length > 0) {
+                            //     user.dataValues.user_names = contacts[i].displayName;
 
-                                    //     if(user.dataValues.phone_number !== phone_number) {
-                                    //         contacts_returned.push(user.dataValues);
-                                    //     }
-                                    // }
-                                    // console.log(userr)
+                            //     if(user.dataValues.phone_number !== phone_number) {
+                            //         contacts_returned.push(user.dataValues);
+                            //     }
+                            // }
+                            // console.log(userr)
 
-                                    let ppromise = new Promise((resolve, reject) => {
-                                        let counter = 0;
-                                        for (let i in contacts) {
-                                            const cc = contacts[i].phoneNumber;
+                            let ppromise = new Promise((resolve, reject) => {
+                                let counter = 0;
+                                for (let i in contacts) {
+                                    const cc = contacts[i].phoneNumber;
 
-                                            UsersModel.findOne({ phone_number: cc })
-                                                .then(userrr => {
-                                                    if (userrr !== null) {
-                                                        // user.dataValues.user_names = contacts[i].displayName;
+                                    UsersModel.findOne({ phone_number: cc })
+                                        .then(userrr => {
+                                            if (userrr !== null) {
+                                                // user.dataValues.user_names = contacts[i].displayName;
 
-                                                        // if(user.dataValues.phone_number !== phone_number) {
-                                                        contacts_returned.push(userrr);
-                                                        // }
+                                                // if(user.dataValues.phone_number !== phone_number) {
+                                                const user_assemble_data = {
+                                                    user_id: userrr._id,
+                                                    user_names: userrr.user_names,
+                                                    phone_number: userrr.phone_number,
+                                                    gender: userrr.gender + "",
+                                                    birth_date: userrr.birth_date,
+                                                    country: userrr.country,
+                                                    user_profile: userrr.user_profile,
+                                                    profession: userrr.profession,
+                                                    bio: userrr.bio,
+                                                    user_email: userrr.user_email,
+                                                    user_address: userrr.user_address,
+                                                    status_information: userrr.status_information,
+                                                    user_password: userrr.user_password,
+                                                    account_privacy: userrr.account_privacy + "",
+                                                    account_valid: userrr.account_valid + "",
+                                                    notification_token: userrr.notification_token,
+                                                    createdAt: userrr.createdAt,
+                                                    updatedAt: userrr.updatedAt,
+                                                }
 
-                                                        console.log("Not null")
-                                                    }
-                                                    // console.log(userr)
-                                                })
+                                                contacts_returned.push(user_assemble_data);
+                                                // }
 
-                                            counter = counter + 1;
-                                            console.log(counter);
-
-                                            if (counter === contacts.length) {
-                                                // resolve(counter);
-                                                // console.log(counter +" : "+contacts.length);
-                                                resolve(counter);
+                                                // console.log("Not null")
                                             }
-                                        }
-                                    })
+                                            // console.log(userr)
+                                        })
 
-                                    ppromise.then((result) => {
+                                    counter = counter + 1;
+                                    console.log(counter);
 
-                                        setTimeout(() => {
-                                            if (result === contacts.length) {
-                                                // console.log(contacts_returned);
-                                                response.send({ success: "1", assemble: user, contacts: contacts_returned });
-                                            }
-                                        }, 2000)
-                                    })
+                                    if (counter === contacts.length) {
+                                        // resolve(counter);
+                                        // console.log(counter +" : "+contacts.length);
+                                        resolve(counter);
+                                    }
+                                }
+                            })
 
-                                // })
+                            ppromise.then((result) => {
+
+                                setTimeout(() => {
+                                    if (result === contacts.length) {
+                                        // console.log(contacts_returned);
+                                        response.send({ success: "1", assemble: user, contacts: contacts_returned });
+                                    }
+                                }, 2000)
+                            })
+
+                            // })
                             // }
 
                             //         setTimeout(() => {
