@@ -1,4 +1,4 @@
-import { MessagesModel } from "../../models/messages";
+import { MessagesModel } from "../../models/Messages";
 
 const FindUserMessages = async (phone_number) => {
     try {

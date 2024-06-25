@@ -1,12 +1,8 @@
 import http from 'http';
-import Yambi from '../express';
-import { Messages, MessagesModel } from '../../models/messages';
-import { Op } from 'sequelize';
-import fs from 'fs';
-import path from 'path';
-import FindUserMessages from './find_user_messages';
+import Yambi from '../Express';
+import { MessagesModel } from '../../models/Messages';
 import moment from 'moment';
-import { User, UsersModel } from '../../models/users';
+import { UsersModel } from '../../models/Users';
 
 export default function SocketMessage() {
     const server = http.createServer(Yambi);
@@ -14,7 +10,6 @@ export default function SocketMessage() {
 
     io.on("connection", socket => {
         console.log("a user connected :D");
-        // console.log(socket.id);
 
         socket.emit('send_assemble');
 

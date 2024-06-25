@@ -1,26 +1,25 @@
 import mongoose from "mongoose";
 
-const BusinessSchema = mongoose.Schema(
+const SellPointSchema = mongoose.Schema(
     {
         _id: { type: String, unique: true },
         phone_number: { type: String, required: true },
-        business_name: { type: String, required: true },
+        business_id: { type: String, required: true },
+        sells_point_name: { type: String, required: true },
         slogan: { type: String },
         description_service: { type: String },
-        category: { type: String },
+        category: { type: Number },
         keywords: { type: String },
         logo: { type: String },
         phones: { type: String },
         emails: { type: String },
         background: { type: String },
-        business_active: { type: String },
-        business_address: { type: String },
-        business_visibility: { type: String },
+        sells_point_active: { type: Number, required: true },
+        sells_point_address: { type: String },
+        sells_point_visible: { type: Number, required: true },
         website: { type: String },
         other_links: { type: String },
-        yambi: { type: String },
-        createdAt: { type: String },
-        updatedAt: { type: String }
+        yambi: { type: String }
     },
     {
         timestamps: true,
@@ -28,5 +27,5 @@ const BusinessSchema = mongoose.Schema(
     }
 )
 
-export const BusinessModel = mongoose.model("businesses_yb", BusinessSchema, 'businesses');
+export const SellsPointModel = mongoose.model("sells_points_yb", SellPointSchema, 'sells_points');
 

@@ -19,7 +19,7 @@ mongoose.connect("mongodb://" + ip_mongo + "/yb_center")
 		});
 	})
 	.catch((e) => {
-		console.log("Enable to connectt to database");
+		console.log("Enable to connect to database");
 		console.log(e)
 	})
 

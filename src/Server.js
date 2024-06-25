@@ -1,0 +1,22 @@
+import SendPictureMessage from './APIs/MessagePicture';
+import NewBusiness from './APIs/NewBusiness';
+import NewSellsPoint from './APIs/NewSellsPoint';
+import Signup from './APIs/Signup';
+import SocketMessage from './APIs/Socket';
+import UploadProfilePicture from './APIs/UploadProfilePicture';
+import UploadVoiceNote from './APIs/UploadVoiceNote';
+
+Signup();
+SocketMessage();
+// SendPresavedMessages();
+// FindUserMessages();
+// SetChatRead();
+// SetMessagesReceived();
+// FindStatusMessages();
+// MessagePicture();
+// UploadProfilePicture();
+NewSellsPoint();
+NewBusiness();
+UploadVoiceNote();
+SendPictureMessage();
+// FetchUserData();

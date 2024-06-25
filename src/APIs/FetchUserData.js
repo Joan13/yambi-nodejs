@@ -1,5 +1,5 @@
-import Yambi from "../express";
-import { User } from '../../models/users';
+import Yambi from "../Express";
+import { User } from '../../models/Users';
 
 export default function FetchUserData() {
     Yambi.post("/yambi/API/fetch_user_data", (request, response) => {

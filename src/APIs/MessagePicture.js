@@ -1,7 +1,5 @@
-import Yambi from "../express";
+import Yambi from "../Express";
 import multer from "multer";
-import fs from 'fs';
-import { User } from "../../models/users";
 
 const storage = multer.diskStorage({
     destination: (request, file, cb) => {
@@ -44,3 +42,4 @@ const SendPictureMessage = () => {
 }
 
 export default SendPictureMessage;
+

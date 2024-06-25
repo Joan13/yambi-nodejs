@@ -1,5 +1,5 @@
-import { Messages } from "../../models/messages";
-import Yambi from "../express";
+import { Messages } from "../../models/Messages";
+import Yambi from "../Express";
 
 export default function SetMessagesReceived() {
     Yambi.post("/yambi/API/set_message_received", (request, response) => {

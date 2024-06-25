@@ -1,7 +1,7 @@
-import Yambi from "../express";
+import Yambi from "../Express";
 import multer from "multer";
 import fs from 'fs';
-import { User } from "../../models/users";
+import { User } from "../../models/Users";
 
 const storage = multer.diskStorage({
     destination: (request, file, cb) => {

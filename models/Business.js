@@ -1,26 +1,25 @@
 import mongoose from "mongoose";
 
-const CompanySchema = mongoose.Schema(
+const BusinessSchema = mongoose.Schema(
     {
         _id: { type: String, unique: true },
         phone_number: { type: String, required: true },
-        company_names: { type: String, required: true },
+        business_name: { type: String, required: true },
         slogan: { type: String },
         description_service: { type: String },
-        category: { type: String },
+        category: { type: Number },
         keywords: { type: String },
+        currency: { type: Number },
         logo: { type: String },
         phones: { type: String },
         emails: { type: String },
         background: { type: String },
-        company_active: { type: String },
-        company_address: { type: String },
-        company_visibility: { type: String },
+        business_active: { type: Number, required: true },
+        business_address: { type: String },
+        business_visible: { type: Number, required: true },
         website: { type: String },
         other_links: { type: String },
-        yambi: { type: String },
-        createdAt: { type: String },
-        updatedAt: { type: String }
+        yambi: { type: String }
     },
     {
         timestamps: true,
@@ -28,5 +27,5 @@ const CompanySchema = mongoose.Schema(
     }
 )
 
-export const CompanyModel = mongoose.model("companies_yb", CompanySchema, 'companies');
+export const BusinessModel = mongoose.model("business_yb", BusinessSchema, 'businesses');
 

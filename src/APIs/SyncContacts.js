@@ -1,6 +1,5 @@
-import { User, UsersModel } from "../../models/users";
-import Yambi from "../express";
-import { connection } from "../mysql";
+import { UsersModel } from "../../models/users";
+import Yambi from "../Express";
 
 export default function SyncContacts() {
     Yambi.post("/yambi/API/sync_contacts", (request, response) => {

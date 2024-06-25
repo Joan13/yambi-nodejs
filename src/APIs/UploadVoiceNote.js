@@ -1,4 +1,4 @@
-import Yambi from "../express";
+import Yambi from "../Express";
 import multer from "multer";
 
 const storage = multer.diskStorage({
@@ -20,3 +20,4 @@ const UploadVoiceNote = () => {
 }
 
 export default UploadVoiceNote;
+
