@@ -3,6 +3,9 @@ import Yambi from '../Express';
 import { MessagesModel } from '../../models/Messages';
 import moment from 'moment';
 import { UsersModel } from '../../models/Users';
+import { BusinessItemsModel } from '../../models/Item';
+import { SalesModel } from '../../models/Sales';
+import { ItemPricesModel } from '../../models/ItemPrices';
 
 export default function SocketMessage() {
     const server = http.createServer(Yambi);
@@ -62,11 +65,11 @@ export default function SocketMessage() {
                         if (messages) {
                             socket.emit("newMessages" + phone_number, messages);
                         }
-                        console.log(messages.length)
+                        // console.log(messages.length)
                     }, 2000);
 
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }
         });
@@ -86,7 +89,7 @@ export default function SocketMessage() {
                 }
 
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         });
 
@@ -116,14 +119,11 @@ export default function SocketMessage() {
 
                 socket.to("room" + msg.sender).emit('messageUpdate' + msg.sender, mm);
                 socket.emit('messageUpdate' + msg.receiver, mm);
-            } catch (error) {
-                console.log(error)
-            }
+            } catch (error) { }
         });
 
         // User sends multiple receive message status
         socket.on('messagesReceived', async (msgs) => {
-            // console.log(msgs)
             for (let i in msgs) {
                 try {
                     const mm = {
@@ -149,7 +149,7 @@ export default function SocketMessage() {
                     socket.to("room" + msgs[i].sender).emit('messageUpdate' + msgs[i].sender, mm);
                     socket.emit('messageUpdate' + msgs[i].receiver, mm);
                 } catch (error) {
-                    console.log(error)
+                    // console.log(error)
                 }
             }
         });
@@ -213,7 +213,7 @@ export default function SocketMessage() {
                     await MessagesModel.findByIdAndUpdate(msgs[i].token, mm);
                     // socket.emit('messageUpdate' + msgs[i].receiver, mm);
                 } catch (error) {
-                    console.log(error)
+                    // console.log(error)
                 }
             }
         });
@@ -244,7 +244,7 @@ export default function SocketMessage() {
                 socket.to("room" + msg.sender).emit('messageUpdate' + msg.sender, mm);
                 socket.emit('messageUpdate' + msg.receiver, mm);
             } catch (error) {
-                console.log(error)
+                // console.log(error)
             }
         });
 
@@ -259,9 +259,6 @@ export default function SocketMessage() {
                     UsersModel.findOne({ phone_number: cc })
                         .then(contact => {
                             if (contact !== null) {
-                                // user.dataValues.user_names = contacts[i].displayName;
-
-                                // if(user.dataValues.phone_number !== phone_number) {
                                 const cc = {
                                     user_id: contact._id,
                                     user_names: contact.user_names,
@@ -283,11 +280,7 @@ export default function SocketMessage() {
                                     updatedAt: contact.updatedAt,
                                 }
                                 contacts_returned.push(cc);
-                                // }
-
-                                // console.log("Not null")
                             }
-                            // console.log(userr)
                         })
 
                     counter = counter + 1;
@@ -352,6 +345,81 @@ export default function SocketMessage() {
                 }
             }
         });
+
+        socket.on('newItems', async items => {
+            for (let i in items) {
+                try {
+                    const mm = {
+                        _id: items[i]._id,
+                        business_id: items[i].business_id,
+                        phone_number: items[i].phone_number,
+                        item_name: items[i].item_name,
+                        slogan: items[i].slogan,
+                        item_type: items[i].item_type,
+                        wholesale_content_number: items[i].wholesale_content_number,
+                        items_number_stock: items[i].items_number_stock,
+                        items_number_warehouse: items[i].items_number_warehouse,
+                        description_item: items[i].description_item,
+                        keywords: items[i].keywords,
+                        images: items[i].images,
+                        background: items[i].background,
+                        item_active: items[i].item_active,
+                        uploaded: 1
+                    }
+
+                    await BusinessItemsModel.findByIdAndUpdate(items[i]._id, mm, { upsert: true });
+
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        });
+
+        socket.on('newSales', async sales => {
+            for (let i in sales) {
+                try {
+                    const mm = {
+                        _id: sales[i]._id,
+                        item_id: sales[i].item_id,
+                        sales_point_id: sales[i].sales_point_id,
+                        number: sales[i].number,
+                        cost_price: sales[i].cost_price,
+                        selling_price: sales[i].selling_price,
+                        delivery_price: sales[i].delivery_price,
+                        delivery_address: sales[i].delivery_address,
+                        uploaded: sales[i].uploaded,
+                        sale_active: sale_active,
+                        delivery_time: sales[i].delivery_price,
+                    }
+
+                    await SalesModel.findByIdAndUpdate(sales[i]._id, mm, { upsert: true });
+
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        });
+
+        socket.on('newItemPrices', async prices => {
+            for (let i in prices) {
+                try {
+                    const mm = {
+                        _id: prices[i]._id,
+                        wholesale_cost_price: prices[i].wholesale_cost_price,
+                        wholesale_selling_price: prices[i].wholesale_selling_price,
+                        retail_selling_price: prices[i].retail_selling_price,
+                        uploaded: prices[i].uploaded,
+                        currency: prices[i].currency
+                    }
+
+                    await ItemPricesModel.findByIdAndUpdate(prices[i]._id, mm, { upsert: true });
+
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        });
+
     });
 
     let port = 3453;
