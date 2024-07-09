@@ -16,6 +16,7 @@ export default function NewBusiness() {
                 description_service: business.description_service,
                 category: business.category,
                 keywords: "",
+                currency: business.currency,
                 logo: "",
                 phones: "",
                 emails: "",

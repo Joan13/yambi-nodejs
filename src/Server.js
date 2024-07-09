@@ -14,7 +14,7 @@ SocketMessage();
 // SetMessagesReceived();
 // FindStatusMessages();
 // MessagePicture();
-// UploadProfilePicture();
+UploadProfilePicture();
 NewSellsPoint();
 NewBusiness();
 UploadVoiceNote();

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const SellPointSchema = mongoose.Schema(
+const SellsPointSchema = mongoose.Schema(
     {
         _id: { type: String, unique: true },
         phone_number: { type: String, required: true },
@@ -27,5 +27,5 @@ const SellPointSchema = mongoose.Schema(
     }
 )
 
-export const SellsPointModel = mongoose.model("sells_points_yb", SellPointSchema, 'sells_points');
+export const SellsPointModel = mongoose.model("sells_points_yb", SellsPointSchema, 'sells_points');
 
