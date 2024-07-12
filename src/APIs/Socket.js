@@ -364,13 +364,13 @@ export default function SocketMessage() {
                         images: items[i].images,
                         background: items[i].background,
                         item_active: items[i].item_active,
-                        uploaded: 1
+                        // uploaded: 1
                     }
 
                     await BusinessItemsModel.findByIdAndUpdate(items[i]._id, mm, { upsert: true });
 
                 } catch (error) {
-                    console.log(error)
+                    // console.log(error)
                 }
             }
         });
@@ -382,20 +382,23 @@ export default function SocketMessage() {
                         _id: sales[i]._id,
                         item_id: sales[i].item_id,
                         sales_point_id: sales[i].sales_point_id,
+                        sale_operator: sales[i].sale_operator,
                         number: sales[i].number,
                         cost_price: sales[i].cost_price,
                         selling_price: sales[i].selling_price,
                         delivery_price: sales[i].delivery_price,
                         delivery_address: sales[i].delivery_address,
-                        uploaded: sales[i].uploaded,
-                        sale_active: sale_active,
+                        discount_price: sales[i].discount_price,
+                        // uploaded: sales[i].uploaded,
+                        sale_active: sales[i].sale_active,
                         delivery_time: sales[i].delivery_price,
+                        createdAt: sales[i].createdAt,
                     }
 
                     await SalesModel.findByIdAndUpdate(sales[i]._id, mm, { upsert: true });
 
                 } catch (error) {
-                    console.log(error)
+                    // console.log(error)
                 }
             }
         });
@@ -405,20 +408,42 @@ export default function SocketMessage() {
                 try {
                     const mm = {
                         _id: prices[i]._id,
+                        item_id: prices[i].item_id,
+                        phone_number: prices[i].phone_number,
                         wholesale_cost_price: prices[i].wholesale_cost_price,
                         wholesale_selling_price: prices[i].wholesale_selling_price,
                         retail_selling_price: prices[i].retail_selling_price,
-                        uploaded: prices[i].uploaded,
+                        // uploaded: prices[i].uploaded,
                         currency: prices[i].currency
                     }
 
                     await ItemPricesModel.findByIdAndUpdate(prices[i]._id, mm, { upsert: true });
 
                 } catch (error) {
-                    console.log(error)
+                    // console.log(error)
                 }
             }
         });
+
+        socket.on("check_sales", async sss => {
+            const sales = JSON.parse(sss);
+            // console.log(JSON.parse(sales));
+
+            for (let i in sales) {
+                try {
+                    const item_sales = await SalesModel.find({ item_id: sales[i].item });
+
+                    if (item_sales) {
+                        if (item_sales.length !== sales[i].sale_length) {
+                            socket.emit("sales_update", JSON.stringify(item_sales));
+                        }
+                    }
+
+                } catch (error) { }
+
+                // console.log(sales[i].item)
+            }
+        })
 
     });
 

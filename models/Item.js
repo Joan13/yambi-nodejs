@@ -16,7 +16,7 @@ const BusinessItemsSchema = mongoose.Schema(
         images: { type: String },
         background: { type: String },
         item_active: { type: Number },
-        uploaded: { type: Number },
+        // uploaded: { type: Number },
     },
     {
         timestamps: true,

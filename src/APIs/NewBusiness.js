@@ -12,21 +12,23 @@ export default function NewBusiness() {
                 _id: business._id,
                 phone_number: business.phone_number,
                 business_name: business.business_name,
-                slogan: "",
+                slogan: business.slogan,
                 description_service: business.description_service,
                 category: business.category,
-                keywords: "",
+                keywords: business.keywords,
                 currency: business.currency,
-                logo: "",
-                phones: "",
-                emails: "",
-                background: "",
+                logo: business.logo,
+                phones: business.phones,
+                emails: business.emails,
+                background: business.background,
+                national_number: business.national_number,
+                national_id: business.national_id,
                 business_active: 0,
                 business_address: business.business_address,
                 business_visible: 0,
-                website: "",
-                other_links: "",
-                yambi: ""
+                website: business.website,
+                other_links: business.other_links,
+                yambi: business.yambi
             })
                 .then(newBusiness => {
                     response.send({ business: newBusiness });

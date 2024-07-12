@@ -3,10 +3,11 @@ import mongoose from "mongoose";
 const ItemPricesSchema = mongoose.Schema(
     {
         _id: { type: String, unique: true },
+        phone_number: { type: String },
         wholesale_cost_price: { type: String },
         wholesale_selling_price: { type: String },
         retail_selling_price: { type: String },
-        uploaded: { type: Number },
+        // uploaded: { type: Number },
         currency: { type: Number }
     },
     {

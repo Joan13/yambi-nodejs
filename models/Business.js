@@ -14,6 +14,8 @@ const BusinessSchema = mongoose.Schema(
         phones: { type: String },
         emails: { type: String },
         background: { type: String },
+        national_number: { type: String },
+        national_id: { type: String },
         business_active: { type: Number, required: true },
         business_address: { type: String },
         business_visible: { type: Number, required: true },
