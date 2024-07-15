@@ -7,9 +7,7 @@ const BusinessUsersSchema = mongoose.Schema(
         sales_point_id: { type: String },
         phone_number: { type: String },
         level: { type: Number },
-        user_active: { type: Number },
-        createdAt: { type: String },
-        updatedAt: { type: String }
+        user_active: { type: Number }
     },
     {
         timestamps: true,

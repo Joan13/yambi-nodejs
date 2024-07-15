@@ -32,7 +32,7 @@ export default function NewSellsPoint() {
                     response.send({ new_sells_point: new_sells_point });
                 })
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
 
     });
