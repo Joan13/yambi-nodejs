@@ -1,11 +1,22 @@
 import { BusinessModel } from "../../models/Business";
-import Yambi from "../Express";
+import { BusinessUsersModel } from "../../models/BusinessUsers";
+import Yambi, { randomString, renderDateUpToMilliseconds } from "../Express";
 
 export default function NewBusiness() {
 
     Yambi.post("/yambi/API/new_business", async (request, response) => {
         let business = request.body.business;
         // console.log(message);
+
+        const business_user = {
+            _id: randomString(5) + renderDateUpToMilliseconds(),
+            business_id: business._id,
+            phone_number: business.phone_number,
+            sales_point_id: "",
+            user: business.phone_number,
+            level: 1,
+            user_active: 1
+        }
 
         try {
             await BusinessModel.create({
@@ -28,10 +39,12 @@ export default function NewBusiness() {
                 business_visible: 0,
                 website: business.website,
                 other_links: business.other_links,
-                yambi: business.yambi
+                yambi: business.yambi,
+                valid_until: ""
             })
-                .then(newBusiness => {
-                    response.send({ business: newBusiness });
+                .then(async newBusiness => {
+                    await BusinessUsersModel.create(business_user);
+                    response.send({ business: newBusiness, business_user: business_user });
                 })
         } catch (error) {
             console.log(error);

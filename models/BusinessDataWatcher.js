@@ -5,12 +5,13 @@ const BusinessDataWatcherSchema = mongoose.Schema(
         _id: { type: String, unique: true },
         business_id: { type: String },
         sales_point_id: { type: String },
+        user: { type: String },
         phone_number: { type: String },
         item_id: { type: String },
-        item_prices: { type: string },
-        sales: { type: String },
-        createdAt: { type: String },
-        updatedAt: { type: String }
+        item_price_id: { type: String },
+        sale_id: { type: String },
+        expense_id: { type: String },
+        loan_id: { type: String }
     },
     {
         timestamps: true,

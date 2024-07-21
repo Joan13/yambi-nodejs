@@ -1,3 +1,4 @@
+import CheckData from './APIs/CheckData';
 import SendPictureMessage from './APIs/MessagePicture';
 import NewBusiness from './APIs/NewBusiness';
 import NewBusinessUser from './APIs/NewBusinessUser';
@@ -13,7 +14,7 @@ SocketMessage();
 // FindUserMessages();
 // SetChatRead();
 // SetMessagesReceived();
-// FindStatusMessages();
+CheckData();
 NewBusinessUser();
 UploadProfilePicture();
 NewSellsPoint();

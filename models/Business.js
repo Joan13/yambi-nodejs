@@ -21,7 +21,8 @@ const BusinessSchema = mongoose.Schema(
         business_visible: { type: Number, required: true },
         website: { type: String },
         other_links: { type: String },
-        yambi: { type: String }
+        yambi: { type: String },
+        valid_until: { type: String }
     },
     {
         timestamps: true,

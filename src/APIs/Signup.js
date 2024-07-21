@@ -1,4 +1,8 @@
 import { BusinessModel } from "../../models/Business";
+import { BusinessUsersModel } from "../../models/BusinessUsers";
+import { BusinessItemsModel } from "../../models/Item";
+import { ItemPricesModel } from "../../models/ItemPrices";
+import { SalesModel } from "../../models/Sales";
 import { SellsPointModel } from "../../models/SellsPoint";
 import { UsersModel } from "../../models/Users";
 import Yambi from "../Express";
@@ -13,23 +17,68 @@ export default function Signup() {
         const country = request.body.country;
         const contacts = request.body.contacts;
         let contacts_returned = [];
-        let businesses = null;
-        let sells_points = null;
+        let businesses = [];
+        let sells_points = [];
+        let users = [];
+        let itemss = [];
+        let prices = [];
+        let sales = [];
 
         try {
-            const bb = await BusinessModel.find({
-                phone_number: phone_number
-            });
+            const user = await BusinessUsersModel.find({ user: phone_number });
 
-            businesses = bb;
+            for (let i in user) {
+                try {
+                    const bb = await BusinessModel.findOne({ _id: user[i].business_id });
+
+                    try {
+                        const sps = await BusinessItemsModel.find({ business_id: bb._id });
+
+                        for (let i in sps) {
+                            try {
+                                const ips = await ItemPricesModel.find({ item_id: sps[i]._id });
+                                for (let i in ips) {
+                                    prices.push(ips[i]);
+                                }
+                            } catch (error) { }
+
+                            try {
+                                const sss = await SalesModel.find({ item_id: sps[i]._id });
+                                for (let i in sss) {
+                                    sales.push(sss[i]);
+                                }
+                            } catch (error) { }
+
+                            itemss.push(sps[i]);
+                        }
+
+                    } catch (error) { }
+
+                    if (user[i].sales_point_id !== "" || user[i].level === 1) {
+                        try {
+                            const sp = await SellsPointModel.find({ business_id: bb._id });
+                            for (let i in sp) {
+                                sells_points.push(sp[i]);
+                            }
+                        } catch (error) { }
+                    }
+
+                    businesses.push(bb);
+
+                } catch (error) { }
+
+                try {
+                    const userrs = await BusinessUsersModel.find({ business_id: user[i].business_id });
+                    // console.log(userrs)
+                    for (let i in userrs) {
+                        users.push(userrs[i]);
+                    }
+                } catch (error) { }
+            }
+
         } catch (error) { }
 
-        try {
-            const sp = await SellsPointModel.find({
-                phone_number: phone_number
-            });
-            sells_points = sp;
-        } catch (error) { }
+
 
         const ContinueSignup = async (user) => {
             // try {
@@ -97,9 +146,9 @@ export default function Signup() {
 
                 setTimeout(() => {
                     if (result === contacts.length) {
-                        response.send({ success: "1", assemble: user, contacts: contacts_returned, businesses: businesses, sells_points: sells_points });
+                        response.send({ success: "1", assemble: user, contacts: contacts_returned, businesses: businesses, sells_points: sells_points, items: itemss, prices: prices, sales: sales, users: users });
                     }
-                }, 2000);
+                }, 3000);
             })
 
             //         setTimeout(() => {
