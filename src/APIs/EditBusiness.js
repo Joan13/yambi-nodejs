@@ -18,6 +18,8 @@ export default function EditBusiness() {
         //     user_active: 1
         // }
 
+        // console.log(business)
+
         try {
             await BusinessModel.findByIdAndUpdate(business._id, {
                 _id: business._id,
@@ -43,8 +45,8 @@ export default function EditBusiness() {
                 valid_until: business.valid_until})
                 .then(async newBusiness => {
                     // await BusinessUsersModel.findByIdAndUpdate(business._id, business_user, { upsert: true });
-                    // console.log(newBusiness);
-                    response.send({ business: newBusiness, business_user: {} });
+                    // console.log(1);
+                    response.send({ business: newBusiness, business_user: {}, success:"1" });
                 })
         } catch (error) {
             console.log(error);
