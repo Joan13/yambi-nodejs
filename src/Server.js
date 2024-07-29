@@ -1,4 +1,5 @@
 import CheckData from './APIs/CheckData';
+import EditBusiness from './APIs/EditBusiness';
 import SendPictureMessage from './APIs/MessagePicture';
 import NewBusiness from './APIs/NewBusiness';
 import NewBusinessUser from './APIs/NewBusinessUser';
@@ -21,4 +22,4 @@ NewSellsPoint();
 NewBusiness();
 UploadVoiceNote();
 SendPictureMessage();
-// FetchUserData();
+EditBusiness();

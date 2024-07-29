@@ -27,26 +27,29 @@ export default function SocketMessage() {
         //     socket.to("room" + phone).emit('room_message');
         // });
 
-        // const renderItemFromWatcher = async (item_idd) => {
-        //     try {
-        //         const items = await BusinessItemsModel.find({ _id: item_idd });
-        //         socket.emit('itemsChanged', items);
-        //     } catch (error) { }
-        // }
+        const renderItemFromWatcher = async (item_idd, phone_number) => {
+            // console.log(item_idd)
+            try {
+                const items = await BusinessItemsModel.find({ _id: item_idd });
+                // console.log(items);
+                socket.emit('itemsChanged' + phone_number, items);
+            } catch (error) { }
+        }
 
-        // const renderPriceFromWatcher = async (price_idd) => {
-        //     try {
-        //         const prices = await ItemPricesModel.find({ _id: price_idd });
-        //         socket.emit('pricesChanged', JSON.stringify(prices));
-        //     } catch (error) { }
-        // }
+        const renderPriceFromWatcher = async (price_idd, phone_number) => {
+            try {
+                const prices = await ItemPricesModel.find({ _id: price_idd });
+                socket.emit('pricesChanged' + phone_number, prices);
+                // console.log(prices)
+            } catch (error) { }
+        }
 
-        // const renderSalesFromWatcher = async (sale_idd) => {
-        //     try {
-        //         const sales = await SalesModel.find({ _id: sale_idd });
-        //         socket.emit('salesAdded', JSON.stringify(sales));
-        //     } catch (error) { }
-        // }
+        const renderSalesFromWatcher = async (sale_idd, phone_number) => {
+            try {
+                const sales = await SalesModel.find({ _id: sale_idd });
+                socket.emit('salesChanged' + phone_number, JSON.stringify(sales));
+            } catch (error) { }
+        }
 
         // const renderUserFromWatcher = async (userr) => {
         //     // console.log()
@@ -169,36 +172,36 @@ export default function SocketMessage() {
 
                 // } catch (error) { }
 
-                // try {
-                //     const watcherInstance2 = await BusinessDataWatcherModel.find({ phone_number: phone_number });
+                try {
+                    const watcherInstance2 = await BusinessDataWatcherModel.find({ phone_number: phone_number });
 
-                //     if (watcherInstance2.length > 0) {
-                //         for (let i in watcherInstance2) {
-                //             // if (watcherInstance2[i].user !== "") {
-                //             //     renderUserFromWatcher(watcherInstance2[i].user);
+                    if (watcherInstance2.length > 0) {
+                        for (let i in watcherInstance2) {
+                            // if (watcherInstance2[i].user !== "") {
+                            //     renderUserFromWatcher(watcherInstance2[i].user);
 
-                //             //     renderBusinessesFromWatcher(watcherInstance2[i].business_id);
+                            //     renderBusinessesFromWatcher(watcherInstance2[i].business_id);
 
-                //             //     if (watcherInstance2[i].sales_point_id !== "") {
-                //             //         renderSalesPointsFromWatcher(watcherInstance2[i].sales_point_id);
-                //             //     }
-                //             // }
+                            //     if (watcherInstance2[i].sales_point_id !== "") {
+                            //         renderSalesPointsFromWatcher(watcherInstance2[i].sales_point_id);
+                            //     }
+                            // }
 
-                //             if (watcherInstance2[i].item_id !== "") {
-                //                 renderItemFromWatcher(watcherInstance2[i].item_id);
-                //             }
+                            if (watcherInstance2[i].item_id !== "") {
+                                renderItemFromWatcher(watcherInstance2[i].item_id, phone_number);
+                            }
 
-                //             if (watcherInstance2[i].item_price_id !== "") {
-                //                 renderPriceFromWatcher(watcherInstance2[i].item_price_id);
-                //             }
+                            if (watcherInstance2[i].item_price_id !== "") {
+                                renderPriceFromWatcher(watcherInstance2[i].item_price_id, phone_number);
+                            }
 
-                //             if (watcherInstance2[i].sale_id !== "") {
-                //                 renderSalesFromWatcher(watcherInstance2[i].sale_id);
-                //             }
-                //         }
-                //     }
+                            if (watcherInstance2[i].sale_id !== "") {
+                                renderSalesFromWatcher(watcherInstance2[i].sale_id, phone_number);
+                            }
+                        }
+                    }
 
-                // } catch (error) { }
+                } catch (error) { }
             }
         });
 
@@ -476,11 +479,11 @@ export default function SocketMessage() {
 
         socket.on('newItems', async its => {
 
+            // console.log(its)
+
             const itss = JSON.parse(its);
             const items = itss.items;
             const phn = itss.phone_number;
-
-            // console.log(itss[0])
 
             for (let i in items) {
                 // console.log(items[i]._id)
@@ -500,17 +503,34 @@ export default function SocketMessage() {
                         images: items[i].images,
                         background: items[i].background,
                         item_active: parseInt(items[i].item_active),
+                        createdAt: items[i].createdAt,
+                        updatedAt: items[i].updatedAt
                     }
 
-                    await BusinessItemsModel.findByIdAndUpdate(items[i]._id, mm, { upsert: true });
+                    await BusinessItemsModel.findByIdAndUpdate(items[i]._id, {
+                        _id: items[i]._id,
+                        business_id: items[i].business_id,
+                        phone_number: items[i].phone_number,
+                        item_name: items[i].item_name,
+                        slogan: items[i].slogan,
+                        item_type: parseInt(items[i].item_type),
+                        wholesale_content_number: parseInt(items[i].wholesale_content_number),
+                        items_number_stock: parseInt(items[i].items_number_stock),
+                        items_number_warehouse: parseInt(items[i].items_number_warehouse),
+                        description_item: items[i].description_item,
+                        keywords: items[i].keywords,
+                        images: items[i].images,
+                        background: items[i].background,
+                        item_active: parseInt(items[i].item_active)
+                    }, { upsert: true });
 
                     try {
-                        const userss = await BusinessUsersModel.find({ business_id: items[i].business_id });
+                        const userss = await BusinessUsersModel.find({ business_id: mm.business_id });
                         // console.log()
                         if (userss.length > 0) {
                             for (let i in userss) {
                                 // console.log(mm._id);
-                                socket.to("room" + userss[i].user).emit('itemsChanged', [mm]);
+                                socket.to("room" + userss[i].user).emit('itemsChanged' + userss[i].user, [mm]);
                                 // console.log(userss[i].user + " " + phn)
                                 if (userss[i].user !== phn) {
                                     // console.log("Item added");
@@ -535,10 +555,17 @@ export default function SocketMessage() {
                 } catch (error) { }
             }
 
-            socket.emit('itemsChanged', items);
+            // setTimeout(()=> {
+            socket.emit('itemsChanged' + phn, items);
+            // }, 3000);
         });
 
-        socket.on('newSales', async sales => {
+        socket.on('newSales', async its => {
+
+            const itss = JSON.parse(its);
+            const sales = itss.items;
+            const phn = itss.phone_number;
+
             for (let i in sales) {
                 try {
                     const mm = {
@@ -554,19 +581,81 @@ export default function SocketMessage() {
                         discount_price: sales[i].discount_price,
                         sale_active: parseInt(sales[i].sale_active),
                         delivery_time: sales[i].delivery_price,
+                        type_sale: sales[i].type_sale,
+                        buyer_name: sales[i].buyer_name,
+                        buyer_phone: sales[i].buyer_phone,
                         createdAt: sales[i].createdAt,
+                        updatedAt: sales[i].updatedAt
                     }
 
-                    await SalesModel.findByIdAndUpdate(sales[i]._id, mm, { upsert: true });
+                    await SalesModel.findByIdAndUpdate(sales[i]._id, {
+                        _id: sales[i]._id,
+                        item_id: sales[i].item_id,
+                        sales_point_id: sales[i].sales_point_id,
+                        sale_operator: sales[i].sale_operator,
+                        number: parseInt(sales[i].number),
+                        cost_price: sales[i].cost_price,
+                        selling_price: sales[i].selling_price,
+                        delivery_price: sales[i].delivery_price,
+                        delivery_address: sales[i].delivery_address,
+                        discount_price: sales[i].discount_price,
+                        sale_active: parseInt(sales[i].sale_active),
+                        delivery_time: sales[i].delivery_price,
+                        createdAt: sales[i].createdAt,
+                        updatedAt:sales[i].updatedAt,
+                        buyer_name: sales[i].buyer_name,
+                        buyer_phone: sales[i].buyer_phone,
+                        type_sale: sales[i].type_sale
+                    }, { upsert: true });
 
+                    try {
+                        // console.log(mm)
+                        const bbb = await SellsPointModel.findOne({ _id: sales[i].sales_point_id });
+                        if (bbb !== null) {
+                            try {
+                                const userss = await BusinessUsersModel.find({ business_id: bbb.business_id });
+                                if (userss.length > 0) {
+
+                                    for (let i in userss) {
+                                        if (userss[i].user !== phn) {
+                                            console.log("ok")
+                                            socket.to("room" + userss[i].user).emit('salesChanged' + userss[i].user, JSON.stringify([mm]));
+
+                                            try {
+                                                await BusinessDataWatcherModel.create({
+                                                    _id: randomString(5) + renderDateUpToMilliseconds(),
+                                                    business_id: "",
+                                                    sales_point_id: "",
+                                                    user: "",
+                                                    phone_number: userss[i].user,
+                                                    item_id: "",
+                                                    item_price_id: "",
+                                                    sale_id: mm._id,
+                                                    expense_id: "",
+                                                    loan_id: ""
+                                                });
+                                            } catch (error) { console.log(error) }
+                                        }
+                                    }
+                                }
+                            } catch (error) { }
+                        }
+                    } catch (error) { }
                 } catch (error) {
                     // console.log(error)
                 }
             }
+
+            socket.emit('salesChanged' + phn, JSON.stringify(sales));
         });
 
-        socket.on('newItemPrices', async prices => {
+        socket.on('newItemPrices', async its => {
             // console.log(prices)
+
+            const itss = JSON.parse(its);
+            const prices = itss.items;
+            const phn = itss.phone_number;
+
             for (let i in prices) {
                 try {
                     const mm = {
@@ -582,10 +671,46 @@ export default function SocketMessage() {
 
                     await ItemPricesModel.findByIdAndUpdate(prices[i]._id, mm, { upsert: true });
 
+                    try {
+
+                        // console.log(mm)
+                        const bbb = await BusinessItemsModel.findOne({ _id: prices[i].item_id });
+                        if (bbb !== null) {
+                            try {
+                                const userss = await BusinessUsersModel.find({ business_id: bbb.business_id });
+                                if (userss.length > 0) {
+
+                                    for (let i in userss) {
+                                        if (userss[i].user !== phn) {
+                                            socket.to("room" + userss[i].user).emit('pricesChanged' + userss[i].user, [mm]);
+
+                                            try {
+                                                await BusinessDataWatcherModel.create({
+                                                    _id: randomString(5) + renderDateUpToMilliseconds(),
+                                                    business_id: "",
+                                                    sales_point_id: "",
+                                                    user: "",
+                                                    phone_number: userss[i].user,
+                                                    item_id: "",
+                                                    item_price_id: mm._id,
+                                                    sale_id: "",
+                                                    expense_id: "",
+                                                    loan_id: ""
+                                                });
+                                            } catch (error) { console.log(error) }
+                                        }
+                                    }
+                                }
+                            } catch (error) { }
+                        }
+                    } catch (error) { }
+
                 } catch (error) {
                     // console.log(error)
                 }
             }
+
+            socket.emit("pricesChanged" + phn, prices);
         });
 
         socket.on("check_sales", async sss => {
@@ -617,6 +742,30 @@ export default function SocketMessage() {
 
             try {
                 await BusinessDataWatcherModel.deleteOne({ item_id: item, phone_number: phone_number });
+            } catch (error) { }
+        })
+
+        socket.on('pricesChanged', async dta => {
+
+            const data = JSON.parse(dta);
+
+            const item = data.item;
+            const phone_number = data.phone_number;
+
+            try {
+                await BusinessDataWatcherModel.deleteOne({ item_price_id: item, phone_number: phone_number });
+            } catch (error) { }
+        })
+
+        socket.on('salesChanged', async dta => {
+
+            const data = JSON.parse(dta);
+
+            const item = data.item;
+            const phone_number = data.phone_number;
+
+            try {
+                await BusinessDataWatcherModel.deleteOne({ sale_id: item, phone_number: phone_number });
             } catch (error) { }
         })
 

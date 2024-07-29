@@ -216,28 +216,28 @@ export default function CheckData() {
                 try {
                     const bb = await BusinessModel.findOne({ _id: user[i].business_id });
 
-                    // try {
-                    //     const sps = await BusinessItemsModel.find({ business_id: bb._id });
+                    try {
+                        const sps = await BusinessItemsModel.find({ business_id: bb._id });
 
-                    //     for (let i in sps) {
-                    //         try {
-                    //             const ips = await ItemPricesModel.find({ item_id: sps[i]._id });
-                    //             for (let i in ips) {
-                    //                 prices.push(ips[i]);
-                    //             }
-                    //         } catch (error) { }
+                        for (let i in sps) {
+                            try {
+                                const ips = await ItemPricesModel.find({ item_id: sps[i]._id });
+                                for (let i in ips) {
+                                    prices.push(ips[i]);
+                                }
+                            } catch (error) { }
 
-                    //         try {
-                    //             const sss = await SalesModel.find({ item_id: sps[i]._id });
-                    //             for (let i in sss) {
-                    //                 sales.push(sss[i]);
-                    //             }
-                    //         } catch (error) { }
+                            try {
+                                const sss = await SalesModel.find({ item_id: sps[i]._id });
+                                for (let i in sss) {
+                                    sales.push(sss[i]);
+                                }
+                            } catch (error) { }
 
-                    //         itemss.push(sps[i]);
-                    //     }
+                            itemss.push(sps[i]);
+                        }
 
-                    // } catch (error) { }
+                    } catch (error) { }
 
                     if (user[i].sales_point_id !== "" || user[i].level === 1) {
                         try {

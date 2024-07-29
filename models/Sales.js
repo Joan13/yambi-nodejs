@@ -15,12 +15,16 @@ const SalesSchema = mongoose.Schema(
         delivery_address: { type: String },
         delivery_time: { type: String },
         discount_price: { type: String },
-        // uploaded: { type: Number },
+        type_sale: { type: Number },
         sale_active: { type: Number },
-        delivery_time: { type: String }
+        delivery_time: { type: String },
+        buyer_name: { type: String },
+        buyer_phone: { type: String },
+        createdAt: { type: String },
+        updatedAt: { type: String }
     },
     {
-        timestamps: true,
+        // timestamps: true,
         primaryKey: '_id'
     }
 )
