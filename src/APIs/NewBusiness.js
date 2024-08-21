@@ -4,12 +4,19 @@ import Yambi, { randomString, renderDateUpToMilliseconds } from "../Express";
 
 export default function NewBusiness() {
 
+    const save_user = async (user) => {
+        try {
+            await BusinessUsersModel.create(user);
+        } catch (error) { }
+    }
+
     Yambi.post("/yambi/API/new_business", async (request, response) => {
         let business = request.body.business;
         // console.log(message);
 
         const business_user = {
             _id: randomString(5) + renderDateUpToMilliseconds(),
+            user_name: business.user_name,
             business_id: business._id,
             phone_number: business.phone_number,
             sales_point_id: "",
@@ -42,9 +49,13 @@ export default function NewBusiness() {
                 yambi: business.yambi,
                 valid_until: ""
             })
-                .then(async newBusiness => {
-                    await BusinessUsersModel.create(business_user);
-                    response.send({ business: newBusiness, business_user: business_user });
+                .then(newBusiness => {
+
+                    save_user(business_user);
+
+                    setTimeout(() => {
+                        response.send({ business: newBusiness, business_user: business_user });
+                    }, 500);
                 })
         } catch (error) {
             console.log(error);

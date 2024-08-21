@@ -4,6 +4,7 @@ const BusinessUsersSchema = mongoose.Schema(
     {
         _id: { type: String, unique: true },
         business_id: { type: String },
+        user_name: { type: String },
         sales_point_id: { type: String },
         user: { type: String },
         phone_number: { type: String },

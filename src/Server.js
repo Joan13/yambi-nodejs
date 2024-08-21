@@ -8,13 +8,14 @@ import Signup from './APIs/Signup';
 import SocketMessage from './APIs/Socket';
 import UploadProfilePicture from './APIs/UploadProfilePicture';
 import UploadVoiceNote from './APIs/UploadVoiceNote';
+import EditSalesPoint from './APIs/EditSalesPoint';
 
 Signup();
 SocketMessage();
 // SendPresavedMessages();
 // FindUserMessages();
 // SetChatRead();
-// SetMessagesReceived();
+EditSalesPoint();
 CheckData();
 NewBusinessUser();
 UploadProfilePicture();

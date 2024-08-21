@@ -571,6 +571,7 @@ export default function SocketMessage() {
                     const mm = {
                         _id: sales[i]._id,
                         item_id: sales[i].item_id,
+                        business_id: sales[i].business_id,
                         sales_point_id: sales[i].sales_point_id,
                         sale_operator: sales[i].sale_operator,
                         number: parseInt(sales[i].number),
@@ -583,6 +584,7 @@ export default function SocketMessage() {
                         delivery_time: sales[i].delivery_price,
                         type_sale: sales[i].type_sale,
                         buyer_name: sales[i].buyer_name,
+                        currency: sales[i].currency,
                         buyer_phone: sales[i].buyer_phone,
                         createdAt: sales[i].createdAt,
                         updatedAt: sales[i].updatedAt
@@ -591,6 +593,7 @@ export default function SocketMessage() {
                     await SalesModel.findByIdAndUpdate(sales[i]._id, {
                         _id: sales[i]._id,
                         item_id: sales[i].item_id,
+                        business_id: sales[i].business_id,
                         sales_point_id: sales[i].sales_point_id,
                         sale_operator: sales[i].sale_operator,
                         number: parseInt(sales[i].number),
@@ -602,9 +605,10 @@ export default function SocketMessage() {
                         sale_active: parseInt(sales[i].sale_active),
                         delivery_time: sales[i].delivery_price,
                         createdAt: sales[i].createdAt,
-                        updatedAt:sales[i].updatedAt,
+                        updatedAt: sales[i].updatedAt,
                         buyer_name: sales[i].buyer_name,
                         buyer_phone: sales[i].buyer_phone,
+                        currency: sales[i].currency,
                         type_sale: sales[i].type_sale
                     }, { upsert: true });
 
@@ -618,7 +622,7 @@ export default function SocketMessage() {
 
                                     for (let i in userss) {
                                         if (userss[i].user !== phn) {
-                                            console.log("ok")
+                                            // console.log("ok")
                                             socket.to("room" + userss[i].user).emit('salesChanged' + userss[i].user, JSON.stringify([mm]));
 
                                             try {
@@ -634,7 +638,7 @@ export default function SocketMessage() {
                                                     expense_id: "",
                                                     loan_id: ""
                                                 });
-                                            } catch (error) { console.log(error) }
+                                            } catch (error) { }
                                         }
                                     }
                                 }

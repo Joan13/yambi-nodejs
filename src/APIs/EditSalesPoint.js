@@ -1,10 +1,11 @@
 import { SellsPointModel } from "../../models/SellsPoint";
 import Yambi, { randomString, renderDateUpToMilliseconds } from "../Express";
 
-export default function NewSellsPoint() {
+export default function EsitSalesPoint() {
 
     Yambi.post("/yambi/API/edit_sales_point", async (request, response) => {
-        let sells_point = request.body.sales_point;
+        const sells_point = request.body.sales_point;
+        const { flag } = request.body;
         // console.log(message);
 
         // const business_user = {
@@ -31,7 +32,7 @@ export default function NewSellsPoint() {
                 phones: sells_point.phones,
                 emails: sells_point.emails,
                 background: sells_point.background,
-                sells_point_active: sells_point.sells_point_active,
+                sells_point_active: flag === "0" ? 2 : sells_point.sells_point_active,
                 sells_point_address: sells_point.sells_point_address,
                 sells_point_visible: sells_point.sells_point_visible,
                 website: sells_point.website,
@@ -40,7 +41,7 @@ export default function NewSellsPoint() {
             })
                 .then(new_sells_point => {
                     // await BusinessUsersModel.create(business_user);
-                    response.send({ success: true });
+                    response.send({ success: "1" });
                 })
         } catch (error) {
             // console.log(error);

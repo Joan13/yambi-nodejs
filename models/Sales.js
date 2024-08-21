@@ -4,6 +4,7 @@ const SalesSchema = mongoose.Schema(
     {
         _id: { type: String, unique: true },
         item_id: { type: String },
+        business_id: { type: String },
         sales_point_id: { type: String },
         sale_operator: { type: String },
         number: { type: Number },
@@ -17,6 +18,7 @@ const SalesSchema = mongoose.Schema(
         discount_price: { type: String },
         type_sale: { type: Number },
         sale_active: { type: Number },
+        currency: { type: Number },
         delivery_time: { type: String },
         buyer_name: { type: String },
         buyer_phone: { type: String },

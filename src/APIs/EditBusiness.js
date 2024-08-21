@@ -5,7 +5,8 @@ import Yambi, { randomString, renderDateUpToMilliseconds } from "../Express";
 export default function EditBusiness() {
 
     Yambi.post("/yambi/API/edit_business", async (request, response) => {
-        const business = request.body.business;
+        const { business } = request.body;
+        const { flag } = request.body;
         // console.log(message);
 
         // const business_user = {
@@ -36,17 +37,18 @@ export default function EditBusiness() {
                 background: business.background,
                 national_number: business.national_number,
                 national_id: business.national_id,
-                business_active: business.business_active,
+                business_active: flag === "0" ? 2 : business.business_active,
                 business_address: business.business_address,
                 business_visible: business.business_visible,
                 website: business.website,
                 other_links: business.other_links,
                 yambi: business.yambi,
-                valid_until: business.valid_until})
+                valid_until: business.valid_until
+            })
                 .then(async newBusiness => {
                     // await BusinessUsersModel.findByIdAndUpdate(business._id, business_user, { upsert: true });
                     // console.log(1);
-                    response.send({ business: newBusiness, business_user: {}, success:"1" });
+                    response.send({ business: newBusiness, business_user: {}, success: "1" });
                 })
         } catch (error) {
             console.log(error);
