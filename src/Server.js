@@ -9,12 +9,13 @@ import SocketMessage from './APIs/Socket';
 import UploadProfilePicture from './APIs/UploadProfilePicture';
 import UploadVoiceNote from './APIs/UploadVoiceNote';
 import EditSalesPoint from './APIs/EditSalesPoint';
+import EditBusinessUser from './APIs/EditBusinessUser';
 
 Signup();
 SocketMessage();
 // SendPresavedMessages();
 // FindUserMessages();
-// SetChatRead();
+EditBusinessUser();
 EditSalesPoint();
 CheckData();
 NewBusinessUser();

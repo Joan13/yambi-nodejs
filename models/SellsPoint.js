@@ -14,7 +14,7 @@ const SellsPointSchema = mongoose.Schema(
         phones: { type: String },
         emails: { type: String },
         background: { type: String },
-        // notifications: { type: String },
+        country: { type: String },
         sells_point_active: { type: Number, required: true },
         sells_point_address: { type: String },
         sells_point_visible: { type: Number, required: true },

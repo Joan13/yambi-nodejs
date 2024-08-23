@@ -20,6 +20,7 @@ const SalesSchema = mongoose.Schema(
         sale_active: { type: Number },
         currency: { type: Number },
         delivery_time: { type: String },
+        country: { type: String },
         buyer_name: { type: String },
         buyer_phone: { type: String },
         createdAt: { type: String },

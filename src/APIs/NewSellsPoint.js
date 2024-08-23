@@ -30,6 +30,7 @@ export default function NewSellsPoint() {
                 logo: sells_point.logo,
                 phones: sells_point.phones,
                 emails: sells_point.emails,
+                country: sells_point.country,
                 background: sells_point.background,
                 sells_point_active: 1,
                 sells_point_address: sells_point.sells_point_address,
