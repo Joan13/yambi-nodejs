@@ -15,6 +15,7 @@ const MessagesSchema = mongoose.Schema(
         platform: { type: String },
         token: { type: String, unique: true, },
         deleted: { type: Number },
+        read_once: { type: Number },
         receivedAt: { type: String },
         readAt: { type: String },
         playedAt: { type: String },

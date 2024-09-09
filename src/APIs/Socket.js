@@ -235,6 +235,7 @@ export default function SocketMessage() {
                     message_type: msg.type,
                     response_to: msg.response_to,
                     message_read: 2,
+                    read_once:  msg.read_once,
                     flag: msg.flag,
                     reactions: msg.reactions,
                     platform: msg.platform,
@@ -264,6 +265,7 @@ export default function SocketMessage() {
                         message_type: msgs[i].type,
                         response_to: msgs[i].response_to,
                         message_read: 2,
+                        read_once: msgs[i].read_once,
                         flag: msgs[i].flag,
                         reactions: msgs[i].reactions,
                         platform: msgs[i].platform,
@@ -296,6 +298,7 @@ export default function SocketMessage() {
                         message_type: msgs[i].type,
                         response_to: msgs[i].response_to,
                         message_read: 4,
+                        read_once: msgs[i].read_once,
                         flag: msgs[i].flag,
                         reactions: msgs[i].reactions,
                         platform: msgs[i].platform,
@@ -330,6 +333,7 @@ export default function SocketMessage() {
                         message_type: msgs[i].type,
                         response_to: msgs[i].response_to,
                         message_read: 4,
+                        read_once: msgs[i].read_once,
                         flag: msgs[i].flag,
                         reactions: msgs[i].reactions,
                         platform: msgs[i].platform,
@@ -360,6 +364,7 @@ export default function SocketMessage() {
                     response_to: msg.response_to,
                     message_read: 3,
                     flag: msg.flag,
+                    read_once: msg.read_once,
                     reactions: msg.reactions,
                     platform: msg.platform,
                     message_effect: msg.message_effect,
@@ -438,6 +443,7 @@ export default function SocketMessage() {
         });
 
         socket.on("newMessage", async (msg) => {
+            // console.log(msg)
             try {
                 await MessagesModel.create({
                     _id: msg.token,
@@ -449,6 +455,7 @@ export default function SocketMessage() {
                     message_read: msg.message_read,
                     reactions: msg.reactions,
                     flag: msg.flag,
+                    read_once: msg.read_once,
                     platform: msg.platform,
                     message_effect: msg.message_effect,
                     token: msg.token,
@@ -585,6 +592,8 @@ export default function SocketMessage() {
                         type_sale: sales[i].type_sale,
                         buyer_name: sales[i].buyer_name,
                         currency: sales[i].currency,
+                        description: sales[i].description,
+                        country: sales[i].country,
                         buyer_phone: sales[i].buyer_phone,
                         createdAt: sales[i].createdAt,
                         updatedAt: sales[i].updatedAt
@@ -609,6 +618,7 @@ export default function SocketMessage() {
                         buyer_name: sales[i].buyer_name,
                         buyer_phone: sales[i].buyer_phone,
                         currency: sales[i].currency,
+                        country: sales[i].country,
                         type_sale: sales[i].type_sale
                     }, { upsert: true });
 

@@ -9,6 +9,7 @@ export default function NewBusinessUser() {
         const business_user = {
             _id: message._id,
             business_id: message.business_id,
+            user_name: message.user_name,
             phone_number: message.phone_number,
             sales_point_id: message.level === 1 ? "" : message.sales_point_id,
             user: message.user,

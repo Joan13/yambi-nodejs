@@ -21,6 +21,7 @@ const SalesSchema = mongoose.Schema(
         currency: { type: Number },
         delivery_time: { type: String },
         country: { type: String },
+        description: {type: String},
         buyer_name: { type: String },
         buyer_phone: { type: String },
         createdAt: { type: String },

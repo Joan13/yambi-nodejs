@@ -129,7 +129,7 @@ export default function Signup() {
                             })
 
                         counter = counter + 1;
-                        console.log(counter);
+                        // console.log(counter);
 
                         if (counter === contacts.length) {
                             // resolve(counter);
